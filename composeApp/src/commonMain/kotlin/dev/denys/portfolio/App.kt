@@ -1,5 +1,11 @@
 package dev.denys.portfolio
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -16,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,16 +34,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.automirrored.outlined.Chat
-import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.Send
-import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Work
 import androidx.compose.material.icons.outlined.AccountBox
-import androidx.compose.material.icons.outlined.Chat
 import androidx.compose.material.icons.outlined.Cloud
 import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.material3.Card
@@ -46,6 +48,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -84,11 +87,12 @@ fun App() {
 	)
 
 	val contacts = listOf(
-		ContactEntry("EM", "Email", "dzdenya@gmail.com", "mailto:dzdenya@gmail.com"),
-		ContactEntry("PH", "Phone", "+34 661 455 825", "tel:+34661455825"),
-		ContactEntry("TG", "Telegram", "@denys_zz", "https://t.me/denys_zz"),
-		ContactEntry("WA", "WhatsApp", "+34 661 455 825", "https://wa.me/34661455825"),
-		ContactEntry("IN", "LinkedIn", "denys-zvieriev", "https://www.linkedin.com/in/denys-zvieriev"),
+		ContactEntry(Icons.Filled.Email, "Email", "dzdenya@gmail.com", "mailto:dzdenya@gmail.com"),
+		ContactEntry(Icons.Filled.Phone, "Phone", "+34 661 455 825", "tel:+34661455825"),
+		ContactEntry(Icons.AutoMirrored.Filled.Send, "Telegram", "@denys_zz", "https://t.me/denys_zz"),
+		ContactEntry(Icons.AutoMirrored.Outlined.Chat, "WhatsApp", "+34 661 455 825", "https://wa.me/34661455825"),
+		ContactEntry(Icons.Filled.Work, "LinkedIn", "denys-zvieriev", "https://www.linkedin.com/in/denys-zvieriev"),
+		ContactEntry(Icons.Filled.Work, "GitHub", "denys-zvieriev", "https://github.com/dzdenya/portfolio"),
 	)
 
 	val uriHandler = LocalUriHandler.current
@@ -128,6 +132,17 @@ private fun HeroSection(
 	actionLinks: List<ActionLink>,
 	onOpenLink: (String) -> Unit,
 ) {
+	val indicatorOffset by rememberInfiniteTransition(label = "scroll-indicator")
+		.animateFloat(
+			initialValue = 0f,
+			targetValue = 8f,
+			animationSpec = infiniteRepeatable(
+				animation = tween(durationMillis = 750, easing = FastOutSlowInEasing),
+				repeatMode = RepeatMode.Reverse,
+			),
+			label = "indicator-bounce",
+		)
+
 	BoxWithConstraints(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -232,6 +247,7 @@ private fun HeroSection(
 				modifier = Modifier
 					.width(3.dp)
 					.height(10.dp)
+					.offset(y = indicatorOffset.dp)
 					.background(Color(0xCCFFFFFF), RoundedCornerShape(999.dp)),
 			)
 		}
@@ -472,11 +488,11 @@ private fun ContactSection(
 									.background(Color(0xFFE2ECFF), CircleShape),
 								contentAlignment = Alignment.Center,
 							) {
-								Text(
-									text = contact.icon,
-									color = Color(0xFF1D4ED8),
-									fontWeight = FontWeight.Bold,
-									fontSize = 16.sp,
+								Icon(
+									imageVector = contact.icon,
+									contentDescription = contact.label,
+									tint = Color(0xFF1D4ED8),
+									modifier = Modifier.size(24.dp),
 								)
 							}
 							Text(
@@ -570,7 +586,7 @@ private data class SkillGroup(
 )
 
 private data class ContactEntry(
-	val icon: String,
+	val icon: ImageVector,
 	val label: String,
 	val value: String,
 	val uri: String,
