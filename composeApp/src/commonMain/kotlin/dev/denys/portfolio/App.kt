@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -25,8 +24,24 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.automirrored.outlined.Chat
+import androidx.compose.material.icons.filled.Cloud
+import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Extension
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material.icons.filled.Work
+import androidx.compose.material.icons.outlined.AccountBox
+import androidx.compose.material.icons.outlined.Chat
+import androidx.compose.material.icons.outlined.Cloud
+import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -37,11 +52,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
@@ -52,18 +69,18 @@ import portfolio.composeapp.generated.resources.hero_background
 @Preview
 fun App() {
 	val actionLinks = listOf(
-		ActionLink("Email Me", "mailto:dzdenya@gmail.com"),
-		ActionLink("Call", "tel:+34661455825"),
-		ActionLink("Telegram", "https://t.me/denys_zz"),
-		ActionLink("WhatsApp", "https://wa.me/34661455825"),
-		ActionLink("LinkedIn", "https://www.linkedin.com/in/denys-zvieriev"),
+		ActionLink("Email Me", Icons.Filled.Email, "mailto:dzdenya@gmail.com"),
+		ActionLink("Call", Icons.Filled.Phone, "tel:+34661455825"),
+		ActionLink("Telegram", Icons.AutoMirrored.Filled.Send, "https://t.me/denys_zz"),
+		ActionLink("WhatsApp", Icons.AutoMirrored.Outlined.Chat, "https://wa.me/34661455825"),
+		ActionLink("LinkedIn", Icons.Filled.Work, "https://www.linkedin.com/in/denys-zvieriev"),
 	)
 
 	val skills = listOf(
-		SkillGroup("Languages", listOf("Java", "Kotlin", "Python", "TypeScript")),
-		SkillGroup("Frameworks", listOf("Spring Boot", "Hibernate", "JPA", "Microservices")),
-		SkillGroup("Cloud & DevOps", listOf("AWS", "Docker", "Kubernetes", "CI/CD")),
-		SkillGroup("Databases", listOf("PostgreSQL", "MongoDB", "Redis", "MySQL")),
+		SkillGroup("Languages", Icons.Filled.Code, listOf("Java", "Kotlin", "Python", "TypeScript")),
+		SkillGroup("Frameworks", Icons.Outlined.AccountBox, listOf("Spring Boot", "Hibernate", "JPA", "Microservices")),
+		SkillGroup("Cloud & DevOps", Icons.Outlined.Cloud, listOf("AWS", "Docker", "Kubernetes", "CI/CD")),
+		SkillGroup("Databases", Icons.Outlined.Storage, listOf("PostgreSQL", "MongoDB", "Redis", "MySQL")),
 	)
 
 	val contacts = listOf(
@@ -77,23 +94,29 @@ fun App() {
 	val uriHandler = LocalUriHandler.current
 
 	MaterialTheme {
-		Column(
-			modifier = Modifier
-				.fillMaxSize()
-				.background(color = Color(0xFF020617))
-				.safeContentPadding()
-				.verticalScroll(rememberScrollState()),
+		BoxWithConstraints(
+			modifier = Modifier.fillMaxSize(),
 		) {
-			HeroSection(
-				actionLinks = actionLinks,
-				onOpenLink = uriHandler::openUri,
-			)
-			SkillsSection(skills = skills)
-			ContactSection(
-				contacts = contacts,
-				onOpenLink = uriHandler::openUri,
-			)
-			FooterSection()
+			val viewportHeight = maxHeight
+
+			Column(
+				modifier = Modifier
+					.fillMaxSize()
+					.background(color = Color(0xFF020617))
+					.verticalScroll(rememberScrollState()),
+			) {
+				HeroSection(
+					sectionHeight = viewportHeight,
+					actionLinks = actionLinks,
+					onOpenLink = uriHandler::openUri,
+				)
+				SkillsSection(skills = skills)
+				ContactSection(
+					contacts = contacts,
+					onOpenLink = uriHandler::openUri,
+				)
+				FooterSection()
+			}
 		}
 	}
 }
@@ -101,13 +124,14 @@ fun App() {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun HeroSection(
+	sectionHeight: Dp,
 	actionLinks: List<ActionLink>,
 	onOpenLink: (String) -> Unit,
 ) {
 	BoxWithConstraints(
 		modifier = Modifier
 			.fillMaxWidth()
-			.heightIn(min = 680.dp)
+			.height(sectionHeight)
 			.clipToBounds(),
 	) {
 		val isCompact = maxWidth < 700.dp
@@ -186,6 +210,7 @@ private fun HeroSection(
 				actionLinks.forEachIndexed { index, action ->
 					ContactButton(
 						label = action.label,
+						icon = action.icon,
 						isPrimary = index == 0,
 						onClick = { onOpenLink(action.uri) },
 					)
@@ -216,6 +241,7 @@ private fun HeroSection(
 @Composable
 private fun ContactButton(
 	label: String,
+	icon: ImageVector,
 	isPrimary: Boolean,
 	onClick: () -> Unit,
 ) {
@@ -230,12 +256,23 @@ private fun ContactButton(
 			color = if (isPrimary) Color(0xFF2563EB) else Color(0x35FFFFFF),
 		),
 	) {
-		Text(
-			text = label,
-			modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
-			color = Color.White,
-			fontWeight = FontWeight.Medium,
-		)
+		Row(
+			modifier = Modifier.padding(horizontal = 18.dp, vertical = 11.dp),
+			horizontalArrangement = Arrangement.spacedBy(8.dp),
+			verticalAlignment = Alignment.CenterVertically,
+		) {
+			Icon(
+				imageVector = icon,
+				contentDescription = label,
+				tint = Color.White,
+				modifier = Modifier.size(18.dp),
+			)
+			Text(
+				text = label,
+				color = Color.White,
+				fontWeight = FontWeight.Medium,
+			)
+		}
 	}
 }
 
@@ -313,7 +350,15 @@ private fun SkillsSection(skills: List<SkillGroup>) {
 								modifier = Modifier
 									.size(44.dp)
 									.background(Color(0xFF1D4ED8), RoundedCornerShape(12.dp)),
-							)
+								contentAlignment = Alignment.Center,
+							) {
+								Icon(
+									imageVector = skill.icon,
+									contentDescription = skill.category,
+									tint = Color.White,
+									modifier = Modifier.size(24.dp),
+								)
+							}
 							Text(
 								text = skill.category,
 								fontSize = 24.sp,
@@ -514,11 +559,13 @@ private fun RowWithDot(
 
 private data class ActionLink(
 	val label: String,
+	val icon: ImageVector,
 	val uri: String,
 )
 
 private data class SkillGroup(
 	val category: String,
+	val icon: ImageVector,
 	val items: List<String>,
 )
 
