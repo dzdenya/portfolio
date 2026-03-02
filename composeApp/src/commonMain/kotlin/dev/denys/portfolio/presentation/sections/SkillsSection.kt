@@ -2,18 +2,7 @@ package dev.denys.portfolio.presentation.sections
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -30,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.denys.portfolio.presentation.components.RowWithDot
 import dev.denys.portfolio.presentation.model.SkillGroup
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun SkillsSection(skills: List<SkillGroup>) {
@@ -107,7 +97,7 @@ fun SkillsSection(skills: List<SkillGroup>) {
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Icon(
-                                    imageVector = skill.icon,
+                                    imageVector = vectorResource(skill.icon),
                                     contentDescription = skill.category,
                                     tint = Color.White,
                                     modifier = Modifier.size(24.dp),

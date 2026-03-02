@@ -1,10 +1,5 @@
 package dev.denys.portfolio.presentation.data
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.outlined.AccountBox
-import androidx.compose.material.icons.outlined.Cloud
-import androidx.compose.material.icons.outlined.Storage
 import dev.denys.portfolio.presentation.model.ContactEntry
 import dev.denys.portfolio.presentation.model.SkillGroup
 import portfolio.composeapp.generated.resources.*
@@ -20,8 +15,8 @@ val portfolioContacts = listOf(
 )
 
 val portfolioSkills = listOf(
-    SkillGroup("Languages", Icons.Filled.Code, listOf("Java", "Kotlin", "Python", "TypeScript")),
-    SkillGroup("Frameworks", Icons.Outlined.AccountBox, listOf("Spring Boot", "Hibernate", "JPA", "Microservices")),
-    SkillGroup("Cloud & DevOps", Icons.Outlined.Cloud, listOf("AWS", "Docker", "Kubernetes", "CI/CD")),
-    SkillGroup("Databases", Icons.Outlined.Storage, listOf("PostgreSQL", "MongoDB", "Redis", "MySQL")),
+    SkillGroup("Languages", Res.drawable.code, listOf("Java", "Kotlin", "Python", "TypeScript")),
+    SkillGroup("Frameworks", Res.drawable.boxes, listOf("Spring Boot", "Hibernate", "JPA", "Microservices")),
+    SkillGroup("Cloud & DevOps", Res.drawable.cloud, listOf("AWS", "Docker", "Kubernetes", "CI/CD")),
+    SkillGroup("Databases", Res.drawable.database, listOf("PostgreSQL", "MongoDB", "Redis", "MySQL")),
 )
