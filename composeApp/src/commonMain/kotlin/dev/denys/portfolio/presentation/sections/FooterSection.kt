@@ -14,6 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 
 @Composable
 fun FooterSection() {
@@ -33,8 +36,9 @@ fun FooterSection() {
             horizontalAlignment = if (isCompact) Alignment.CenterHorizontally else Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
+            val year = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).year
             Text(
-                text = "© Denys Zvieriev. All rights reserved.",
+                text = "© $year Denys Zvieriev. All rights reserved.",
                 color = Color(0xFF9BA7BC),
                 textAlign = if (isCompact) TextAlign.Center else TextAlign.Start,
             )

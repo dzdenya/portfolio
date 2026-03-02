@@ -9,7 +9,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import dev.denys.portfolio.presentation.model.ActionLink
 import dev.denys.portfolio.presentation.model.ContactEntry
 import dev.denys.portfolio.presentation.model.SkillGroup
 import dev.denys.portfolio.presentation.sections.ContactSection
@@ -19,9 +18,8 @@ import dev.denys.portfolio.presentation.sections.SkillsSection
 
 @Composable
 fun PortfolioHomeScreen(
-    actionLinks: List<ActionLink>,
-    skills: List<SkillGroup>,
     contacts: List<ContactEntry>,
+    skills: List<SkillGroup>,
     onOpenLink: (String) -> Unit,
 ) {
     BoxWithConstraints(
@@ -37,7 +35,7 @@ fun PortfolioHomeScreen(
         ) {
             HeroSection(
                 sectionHeight = viewportHeight,
-                actionLinks = actionLinks,
+                contacts = contacts,
                 onOpenLink = onOpenLink,
             )
             SkillsSection(skills = skills)

@@ -40,16 +40,16 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.denys.portfolio.presentation.components.ContactButton
-import dev.denys.portfolio.presentation.model.ActionLink
+import dev.denys.portfolio.presentation.model.ContactEntry
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 import portfolio.composeapp.generated.resources.Res
 import portfolio.composeapp.generated.resources.hero_background
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun HeroSection(
     sectionHeight: Dp,
-    actionLinks: List<ActionLink>,
+    contacts: List<ContactEntry>,
     onOpenLink: (String) -> Unit,
 ) {
     val indicatorOffset by rememberInfiniteTransition(label = "scroll-indicator")
@@ -140,14 +140,13 @@ fun HeroSection(
                 modifier = Modifier.widthIn(max = 980.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
-                maxItemsInEachRow = if (isCompact) 2 else 5,
+                maxItemsInEachRow = if (isCompact) 2 else 6,
             ) {
-                actionLinks.forEachIndexed { index, action ->
+                contacts.forEachIndexed { index, contact ->
                     ContactButton(
-                        label = action.label,
-                        icon = action.icon,
-                        isPrimary = index == 0,
-                        onClick = { onOpenLink(action.uri) },
+                        label = contact.label,
+                        icon = vectorResource(contact.icon),
+                        onClick = { onOpenLink(contact.uri) },
                     )
                 }
             }

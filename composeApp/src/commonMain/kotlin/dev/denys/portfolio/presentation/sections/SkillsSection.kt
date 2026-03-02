@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.sp
 import dev.denys.portfolio.presentation.components.RowWithDot
 import dev.denys.portfolio.presentation.model.SkillGroup
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SkillsSection(skills: List<SkillGroup>) {
     BoxWithConstraints(

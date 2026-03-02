@@ -28,15 +28,14 @@ import androidx.compose.ui.unit.dp
 fun ContactButton(
     label: String,
     icon: ImageVector,
-    isPrimary: Boolean,
     onClick: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
     val textColor = if (isHovered) Color.Black else Color.White
     val iconColor = if (isHovered) Color.Black else Color.White
-    val backgroundColor = if (isHovered) Color(0x33FFFFFF) else if (isPrimary) Color(0xFF2563EB) else Color(0x1FFFFFFF)
-    val borderColor = if (isPrimary) Color(0xFF2563EB) else Color(0x35FFFFFF)
+    val backgroundColor = if (isHovered) Color(0x4DFFFFFF) else Color(0x1FFFFFFF)
+    val borderColor = Color(0x35FFFFFF)
 
     Surface(
         modifier = Modifier
